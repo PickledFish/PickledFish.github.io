@@ -101,8 +101,8 @@ with open(&#39;rent_58.ttf&#39;, &#39;wb&#39;) as fp:
 </blockquote>
 <p>下面我们开始分析TTF文件吧，用到工具fontCreator来分析字体文件。<br><img src="https://pickledfish.github.io/post-images/1552301774512.png" alt=""></p>
 <p>分析字体文件，看到&quot;5&quot;对应的编码是uni9A4B，问题就在9A4B上面，回到源码，我们去看看租金550对应的源码是什么样(非审查元素看到的生僻字)<br><img src="https://pickledfish.github.io/post-images/1552301973398.png" alt=""></p>
-<p>&#x9a4b;&#x9a4b;&#x9f92;   可以看到9a4b和9f92对应的分别是&quot;5&quot;,&quot;0&quot;<br><img src="https://pickledfish.github.io/post-images/1552302065876.png" alt=""></p>
-<p>那是不是我们把源码中的&#x9a4b; 替换成5，;&#x9f92;替换成0就可以了？？？NO，不是这样的，我刷新页面后发现，字体文件变了，变了。。。。<br><img src="https://pickledfish.github.io/post-images/1552302281969.png" alt=""></p>
+<p>9a4b;9a4b;9f92;   可以看到9a4b和9f92对应的分别是&quot;5&quot;,&quot;0&quot;<br><img src="https://pickledfish.github.io/post-images/1552302065876.png" alt=""></p>
+<p>那是不是我们把源码中的9a4b; 替换成5，9f92;替换成0就可以了？？？NO，不是这样的，我刷新页面后发现，字体文件变了，变了。。。。<br><img src="https://pickledfish.github.io/post-images/1552302281969.png" alt=""></p>
 <p>还是原来的味道，却不是原来的配方了。</p>
 <p>让我们使用python来分析字体文件。</p>
 <pre><code>from fontTools.ttLib import TTFont
