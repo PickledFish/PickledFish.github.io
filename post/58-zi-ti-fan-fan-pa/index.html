@@ -3,9 +3,9 @@
     <meta charset="utf-8" />
 <meta name="description" content="" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>58字体反反爬 | Hve Notes</title>
-<link rel="shortcut icon" href="D:/360MoveData/Users/Admin/Documents/hve-notes/output/favicon.ico">
-<link rel="stylesheet" href="D:/360MoveData/Users/Admin/Documents/hve-notes/output/styles/main.css">
+<title>58字体反反爬 | 潇湘贱鱼</title>
+<link rel="shortcut icon" href="https://pickledfish.github.io/favicon.ico">
+<link rel="stylesheet" href="https://pickledfish.github.io/styles/main.css">
 
 <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
 <script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
@@ -16,11 +16,11 @@
     <div class="main">
       <div class="main-content">
         <div class="site-header">
-  <a href="D:/360MoveData/Users/Admin/Documents/hve-notes/output">
-  <img class="avatar" src="D:/360MoveData/Users/Admin/Documents/hve-notes/output/images/avatar.png" alt="" width="80px" height="80px">
+  <a href="https://pickledfish.github.io">
+  <img class="avatar" src="https://pickledfish.github.io/images/avatar.png" alt="" width="80px" height="80px">
   </a>
   <h1 class="site-title">
-    Hve Notes
+    潇湘贱鱼
   </h1>
   <p class="site-description">
     温故而知新
@@ -65,20 +65,20 @@
                 · 2019-03-11 ·
               </time>
               
-                <a href="D:/360MoveData/Users/Admin/Documents/hve-notes/output/tag/j-SRhcnVz/index.html" class="post-tags">
+                <a href="https://pickledfish.github.io/tag/j-SRhcnVz" class="post-tags">
                   # 爬虫
                 </a>
               
-                <a href="D:/360MoveData/Users/Admin/Documents/hve-notes/output/tag/mbWWdiEzh/index.html" class="post-tags">
+                <a href="https://pickledfish.github.io/tag/mbWWdiEzh" class="post-tags">
                   # 反爬虫
                 </a>
               
             </div>
             <div class="post-content">
               <p>接到新需求，抓取58租房信息，意外发现租金变成了生僻字？或者说不存在的字？反正我不认识</p>
-<p><img src="D:/360MoveData/Users/Admin/Documents/hve-notes/output/post-images/1552297600090.png" alt=""></p>
-<p>根据价格的class查询到css样式中的字体名称fangchan-secret(这名字一看就是自定义的)<br><img src="D:/360MoveData/Users/Admin/Documents/hve-notes/output/post-images/1552297845976.png" alt=""></p>
-<p>打开源码搜索fangchan-secret<br><img src="D:/360MoveData/Users/Admin/Documents/hve-notes/output/post-images/1552297927028.png" alt=""></p>
+<p><img src="https://pickledfish.github.io/post-images/1552297600090.png" alt=""></p>
+<p>根据价格的class查询到css样式中的字体名称fangchan-secret(这名字一看就是自定义的)<br><img src="https://pickledfish.github.io/post-images/1552297845976.png" alt=""></p>
+<p>打开源码搜索fangchan-secret<br><img src="https://pickledfish.github.io/post-images/1552297927028.png" alt=""></p>
 <p>嗯哼？一段base64的字符，它就是网站的字体文件。我们复制下来解码并保存为ttf格式</p>
 <pre><code>import base64
 
@@ -89,10 +89,10 @@ with open(&#39;rent_58.ttf&#39;, &#39;wb&#39;) as fp:
     fp.write(content)</code></pre><blockquote>
 <p>TTF（TrueTypeFont）是Apple公司和Microsoft公司共同推出的字体文件格式，随着windows的流行，已经变成最常用的一种字体文件表示方式。</p>
 </blockquote>
-<p>下面我们开始分析TTF文件吧，用到工具fontCreator来分析字体文件。<br><img src="D:/360MoveData/Users/Admin/Documents/hve-notes/output/post-images/1552301774512.png" alt=""></p>
-<p>分析字体文件，看到&quot;5&quot;对应的编码是uni9A4B，问题就在9A4B上面，回到源码，我们去看看租金550对应的源码是什么样(非审查元素看到的生僻字)<br><img src="D:/360MoveData/Users/Admin/Documents/hve-notes/output/post-images/1552301973398.png" alt=""></p>
-<p>&#x9a4b;&#x9a4b;&#x9f92;   可以看到9a4b和9f92对应的分别是&quot;5&quot;,&quot;0&quot;<br><img src="D:/360MoveData/Users/Admin/Documents/hve-notes/output/post-images/1552302065876.png" alt=""></p>
-<p>那是不是我们把源码中的&#x9a4b; 替换成5，;&#x9f92;替换成0就可以了？？？NO，不是这样的，我刷新页面后发现，字体文件变了，变了。。。。<br><img src="D:/360MoveData/Users/Admin/Documents/hve-notes/output/post-images/1552302281969.png" alt=""></p>
+<p>下面我们开始分析TTF文件吧，用到工具fontCreator来分析字体文件。<br><img src="https://pickledfish.github.io/post-images/1552301774512.png" alt=""></p>
+<p>分析字体文件，看到&quot;5&quot;对应的编码是uni9A4B，问题就在9A4B上面，回到源码，我们去看看租金550对应的源码是什么样(非审查元素看到的生僻字)<br><img src="https://pickledfish.github.io/post-images/1552301973398.png" alt=""></p>
+<p>&#x9a4b;&#x9a4b;&#x9f92;   可以看到9a4b和9f92对应的分别是&quot;5&quot;,&quot;0&quot;<br><img src="https://pickledfish.github.io/post-images/1552302065876.png" alt=""></p>
+<p>那是不是我们把源码中的&#x9a4b; 替换成5，;&#x9f92;替换成0就可以了？？？NO，不是这样的，我刷新页面后发现，字体文件变了，变了。。。。<br><img src="https://pickledfish.github.io/post-images/1552302281969.png" alt=""></p>
 <p>还是原来的味道，却不是原来的配方了。</p>
 <p>让我们使用python来分析字体文件。</p>
 <pre><code>from fontTools.ttLib import TTFont
