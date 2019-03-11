@@ -1,0 +1,166 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="description" content="" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>58字体反反爬 | Hve Notes</title>
+<link rel="shortcut icon" href="D:/360MoveData/Users/Admin/Documents/hve-notes/output/favicon.ico">
+<link rel="stylesheet" href="D:/360MoveData/Users/Admin/Documents/hve-notes/output/styles/main.css">
+
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="D:/360MoveData/Users/Admin/Documents/hve-notes/output">
+  <img class="avatar" src="D:/360MoveData/Users/Admin/Documents/hve-notes/output/images/avatar.png" alt="" width="80px" height="80px">
+  </a>
+  <h1 class="site-title">
+    Hve Notes
+  </h1>
+  <p class="site-description">
+    温故而知新
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+</div>
+
+      
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              58字体反反爬
+            </h2>
+            <div class="post-info">
+              <time class="post-time">
+                · 2019-03-11 ·
+              </time>
+              
+                <a href="D:/360MoveData/Users/Admin/Documents/hve-notes/output/tag/j-SRhcnVz/index.html" class="post-tags">
+                  # 爬虫
+                </a>
+              
+                <a href="D:/360MoveData/Users/Admin/Documents/hve-notes/output/tag/mbWWdiEzh/index.html" class="post-tags">
+                  # 反爬虫
+                </a>
+              
+            </div>
+            <div class="post-content">
+              <p>接到新需求，抓取58租房信息，意外发现租金变成了生僻字？或者说不存在的字？反正我不认识</p>
+<p><img src="D:/360MoveData/Users/Admin/Documents/hve-notes/output/post-images/1552297600090.png" alt=""></p>
+<p>根据价格的class查询到css样式中的字体名称fangchan-secret(这名字一看就是自定义的)<br><img src="D:/360MoveData/Users/Admin/Documents/hve-notes/output/post-images/1552297845976.png" alt=""></p>
+<p>打开源码搜索fangchan-secret<br><img src="D:/360MoveData/Users/Admin/Documents/hve-notes/output/post-images/1552297927028.png" alt=""></p>
+<p>嗯哼？一段base64的字符，它就是网站的字体文件。我们复制下来解码并保存为ttf格式</p>
+<pre><code>import base64
+
+# 太长省略部分
+font_face = &quot;AAEAAAALAIAAAwAwR1NVQiCLJXoAAAE4AAAAVE9TL.....LAQwAAAAAAAAAAAAAAAAAAAAA&quot;
+content = base64.b64decode(font_face)
+with open(&#39;rent_58.ttf&#39;, &#39;wb&#39;) as fp:
+    fp.write(content)</code></pre><blockquote>
+<p>TTF（TrueTypeFont）是Apple公司和Microsoft公司共同推出的字体文件格式，随着windows的流行，已经变成最常用的一种字体文件表示方式。</p>
+</blockquote>
+<p>下面我们开始分析TTF文件吧，用到工具fontCreator来分析字体文件。<br><img src="D:/360MoveData/Users/Admin/Documents/hve-notes/output/post-images/1552301774512.png" alt=""></p>
+<p>分析字体文件，看到&quot;5&quot;对应的编码是uni9A4B，问题就在9A4B上面，回到源码，我们去看看租金550对应的源码是什么样(非审查元素看到的生僻字)<br><img src="D:/360MoveData/Users/Admin/Documents/hve-notes/output/post-images/1552301973398.png" alt=""></p>
+<p>&#x9a4b;&#x9a4b;&#x9f92;   可以看到9a4b和9f92对应的分别是&quot;5&quot;,&quot;0&quot;<br><img src="D:/360MoveData/Users/Admin/Documents/hve-notes/output/post-images/1552302065876.png" alt=""></p>
+<p>那是不是我们把源码中的&#x9a4b; 替换成5，;&#x9f92;替换成0就可以了？？？NO，不是这样的，我刷新页面后发现，字体文件变了，变了。。。。<br><img src="D:/360MoveData/Users/Admin/Documents/hve-notes/output/post-images/1552302281969.png" alt=""></p>
+<p>还是原来的味道，却不是原来的配方了。</p>
+<p>让我们使用python来分析字体文件。</p>
+<pre><code>from fontTools.ttLib import TTFont
+font = TTFont(&#39;./rent_58.ttf&#39;)
+font.saveXML(&#39;test.xml&#39;)</code></pre><p>打开test.xml</p>
+<pre><code>&lt;!-- 我不知道具体含义，也没查过，可能不怎么严谨，但是结果是好的就行，--&gt;
+&lt;!-- xml片段1--&gt;
+    &lt;cmap_format_4 platformID=&quot;0&quot; platEncID=&quot;3&quot; language=&quot;0&quot;&gt;
+      &lt;map code=&quot;0x9476&quot; name=&quot;glyph00007&quot;/&gt;&lt;!-- CJK UNIFIED IDEOGRAPH-9476 --&gt;
+      &lt;map code=&quot;0x958f&quot; name=&quot;glyph00008&quot;/&gt;&lt;!-- CJK UNIFIED IDEOGRAPH-958F --&gt;
+      &lt;map code=&quot;0x993c&quot; name=&quot;glyph00005&quot;/&gt;&lt;!-- CJK UNIFIED IDEOGRAPH-993C --&gt;
+      &lt;map code=&quot;0x9a4b&quot; name=&quot;glyph00006&quot;/&gt;&lt;!-- CJK UNIFIED IDEOGRAPH-9A4B --&gt;
+      &lt;map code=&quot;0x9e3a&quot; name=&quot;glyph00004&quot;/&gt;&lt;!-- CJK UNIFIED IDEOGRAPH-9E3A --&gt;
+      &lt;map code=&quot;0x9ea3&quot; name=&quot;glyph00003&quot;/&gt;&lt;!-- CJK UNIFIED IDEOGRAPH-9EA3 --&gt;
+      &lt;map code=&quot;0x9f64&quot; name=&quot;glyph00010&quot;/&gt;&lt;!-- CJK UNIFIED IDEOGRAPH-9F64 --&gt;
+      &lt;map code=&quot;0x9f92&quot; name=&quot;glyph00001&quot;/&gt;&lt;!-- CJK UNIFIED IDEOGRAPH-9F92 --&gt;
+      &lt;map code=&quot;0x9fa4&quot; name=&quot;glyph00002&quot;/&gt;&lt;!-- CJK UNIFIED IDEOGRAPH-9FA4 --&gt;
+      &lt;map code=&quot;0x9fa5&quot; name=&quot;glyph00009&quot;/&gt;&lt;!-- CJK UNIFIED IDEOGRAPH-9FA5 --&gt;
+    &lt;/cmap_format_4&gt;
+&lt;!-- xml片段2--&gt;
+  &lt;TTGlyph name=&quot;glyph00006&quot; xMin=&quot;0&quot; yMin=&quot;-26&quot; xMax=&quot;1057&quot; yMax=&quot;1549&quot;&gt;
+      &lt;contour&gt;
+        &lt;pt x=&quot;177&quot; y=&quot;238&quot; on=&quot;1&quot;/&gt;
+        &lt;pt x=&quot;333&quot; y=&quot;136&quot; on=&quot;0&quot;/&gt;
+        &lt;pt x=&quot;502&quot; y=&quot;136&quot; on=&quot;1&quot;/&gt;
+        &lt;pt x=&quot;662&quot; y=&quot;136&quot; on=&quot;0&quot;/&gt;
+        &lt;pt x=&quot;858&quot; y=&quot;315&quot; on=&quot;0&quot;/&gt;
+        &lt;pt x=&quot;858&quot; y=&quot;612&quot; on=&quot;0&quot;/&gt;
+        &lt;pt x=&quot;659&quot; y=&quot;776&quot; on=&quot;0&quot;/&gt;
+        &lt;pt x=&quot;470&quot; y=&quot;776&quot; on=&quot;1&quot;/&gt;
+        &lt;pt x=&quot;379&quot; y=&quot;776&quot; on=&quot;0&quot;/&gt;
+        &lt;pt x=&quot;225&quot; y=&quot;762&quot; on=&quot;1&quot;/&gt;
+        &lt;pt x=&quot;225&quot; y=&quot;1549&quot; on=&quot;1&quot;/&gt;
+        &lt;pt x=&quot;987&quot; y=&quot;1549&quot; on=&quot;1&quot;/&gt;
+        &lt;pt x=&quot;987&quot; y=&quot;1376&quot; on=&quot;1&quot;/&gt;
+        &lt;pt x=&quot;407&quot; y=&quot;1376&quot; on=&quot;1&quot;/&gt;
+        &lt;pt x=&quot;407&quot; y=&quot;938&quot; on=&quot;1&quot;/&gt;
+        &lt;pt x=&quot;494&quot; y=&quot;943&quot; on=&quot;0&quot;/&gt;
+        &lt;pt x=&quot;538&quot; y=&quot;943&quot; on=&quot;1&quot;/&gt;
+        &lt;pt x=&quot;783&quot; y=&quot;943&quot; on=&quot;0&quot;/&gt;
+        &lt;pt x=&quot;1057&quot; y=&quot;695&quot; on=&quot;0&quot;/&gt;
+        &lt;pt x=&quot;1057&quot; y=&quot;477&quot; on=&quot;1&quot;/&gt;
+        &lt;pt x=&quot;1057&quot; y=&quot;252&quot; on=&quot;0&quot;/&gt;
+        &lt;pt x=&quot;763&quot; y=&quot;-26&quot; on=&quot;0&quot;/&gt;
+        &lt;pt x=&quot;504&quot; y=&quot;-26&quot; on=&quot;1&quot;/&gt;
+        &lt;pt x=&quot;287&quot; y=&quot;-26&quot; on=&quot;0&quot;/&gt;
+        &lt;pt x=&quot;177&quot; y=&quot;38&quot; on=&quot;1&quot;/&gt;
+      &lt;/contour&gt;
+      &lt;instructions/&gt;
+    &lt;/TTGlyph&gt;</code></pre><p>我们已知9a4b表示的是数字&quot;5&quot;，从而通过cmap中的code=&quot;0x9a4b&quot; 获得对应的name=&quot;glyph00006&quot;,再看下面对应的坐标描述，如果按照xml片段2中的x,y连起来，就会发现获得了一个&quot;5&quot;,<br>然后我通过分析多个ttf文件发现，glyph00006对应的文字描述一直是xml片段2中的内容，我们每次将ttf转成xml之后只需要找到cmap中的对应关系就能对网页中的所有数字进行解码了。</p>
+
+            </div>
+          </article>
+        </div>
+    
+        
+
+        
+    
+        <div class="site-footer">
+  Powered by Hve Notes
+</div>
+
+<script>
+  hljs.initHighlightingOnLoad()
+</script>
+
+      </div>
+    </div>
+  </body>
+</html>
