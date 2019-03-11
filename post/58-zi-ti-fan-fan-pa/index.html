@@ -1,81 +1,92 @@
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
-<meta name="description" content="" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" >
+
 <title>58字体反反爬 | 潇湘贱鱼</title>
+<meta name="description" content="不想当将军的士兵不是好士兵。">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
 <link rel="shortcut icon" href="https://pickledfish.github.io/favicon.ico">
 <link rel="stylesheet" href="https://pickledfish.github.io/styles/main.css">
 
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 
 
   </head>
   <body>
-    <div class="main">
-      <div class="main-content">
-        <div class="site-header">
-  <a href="https://pickledfish.github.io">
-  <img class="avatar" src="https://pickledfish.github.io/images/avatar.png" alt="" width="80px" height="80px">
-  </a>
-  <h1 class="site-title">
-    潇湘贱鱼
-  </h1>
-  <p class="site-description">
-    温故而知新
-  </p>
-  <div class="menu-container">
-    
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://pickledfish.github.io">
+        <img src="https://pickledfish.github.io/images/avatar.png" class="site-logo">
+        <h1 class="site-title">潇湘贱鱼</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
       
-        <a href="/" class="menu">
-          首页
-        </a>
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
       
-    
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
       
-        <a href="/archives" class="menu">
-          归档
-        </a>
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
       
-    
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
       
-        <a href="/tags" class="menu">
-          标签
-        </a>
-      
-    
-      
-        <a href="/post/about" class="menu">
-          关于
-        </a>
-      
-    
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="site-description">
+      不想当将军的士兵不是好士兵。
+    </div>
+    <div class="site-footer">
+      Powered by Hve Notes
+    </div>
   </div>
 </div>
 
-      
-        <div class="post-detail">
-          <article class="post">
-            <h2 class="post-title">
-              58字体反反爬
-            </h2>
-            <div class="post-info">
-              <time class="post-time">
-                · 2019-03-11 ·
-              </time>
-              
-                <a href="https://pickledfish.github.io/tag/j-SRhcnVz" class="post-tags">
-                  # 爬虫
-                </a>
-              
-                <a href="https://pickledfish.github.io/tag/mbWWdiEzh" class="post-tags">
-                  # 反爬虫
-                </a>
-              
-            </div>
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">58字体反反爬</h2>
+            <div class="post-date">2019-03-11</div>
+            
+              <div class="feature-container" style="background-image: url('https://pickledfish.github.io/post-images/58-zi-ti-fan-fan-pa.png')">
+              </div>
+            
             <div class="post-content">
-              <p>接到新需求，抓取58租房信息，意外发现租金变成了生僻字？或者说不存在的字？反正我不认识</p>
+              <p>哈哈哈哈哈哈哈哈</p>
+<!-- more -->
+
+<p>接到新需求，抓取58租房信息，意外发现租金变成了生僻字？或者说不存在的字？反正我不认识</p>
 <p><img src="https://pickledfish.github.io/post-images/1552297600090.png" alt=""></p>
 <p>根据价格的class查询到css样式中的字体名称fangchan-secret(这名字一看就是自定义的)<br><img src="https://pickledfish.github.io/post-images/1552297845976.png" alt=""></p>
 <p>打开源码搜索fangchan-secret<br><img src="https://pickledfish.github.io/post-images/1552297927028.png" alt=""></p>
@@ -145,22 +156,48 @@ font.saveXML(&#39;test.xml&#39;)</code></pre><p>打开test.xml</p>
     &lt;/TTGlyph&gt;</code></pre><p>我们已知9a4b表示的是数字&quot;5&quot;，从而通过cmap中的code=&quot;0x9a4b&quot; 获得对应的name=&quot;glyph00006&quot;,再看下面对应的坐标描述，如果按照xml片段2中的x,y连起来，就会发现获得了一个&quot;5&quot;,<br>然后我通过分析多个ttf文件发现，glyph00006对应的文字描述一直是xml片段2中的内容，我们每次将ttf转成xml之后只需要找到cmap中的对应关系就能对网页中的所有数字进行解码了。</p>
 
             </div>
-          </article>
+            
+              <div class="tag-container">
+                
+                  <a href="https://pickledfish.github.io/tag/j-SRhcnVz" class="tag">
+                    爬虫
+                  </a>
+                
+                  <a href="https://pickledfish.github.io/tag/mbWWdiEzh" class="tag">
+                    反爬虫
+                  </a>
+                
+              </div>
+            
+            
+
+            
+
+          </div>
+
         </div>
-    
-        
-
-        
-    
-        <div class="site-footer">
-  Powered by Hve Notes
-</div>
-
-<script>
-  hljs.initHighlightingOnLoad()
-</script>
-
       </div>
     </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
   </body>
 </html>
