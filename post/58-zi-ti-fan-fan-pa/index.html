@@ -153,6 +153,7 @@ font.saveXML(&#39;test.xml&#39;)</code></pre><p>打开test.xml</p>
       &lt;/contour&gt;
       &lt;instructions/&gt;
     &lt;/TTGlyph&gt;</code></pre><p>我们已知9a4b表示的是数字&quot;5&quot;，从而通过cmap中的code=&quot;0x9a4b&quot; 获得对应的name=&quot;glyph00006&quot;,再看下面对应的坐标描述，如果按照xml片段2中的x,y连起来，就会发现获得了一个&quot;5&quot;,<br>然后我通过分析多个ttf文件发现，glyph00006对应的文字描述一直是xml片段2中的内容，我们每次将ttf转成xml之后只需要找到cmap中的对应关系就能对网页中的所有数字进行解码了。</p>
+<p>代码地址:<a href="https://github.com/PickledFish/58RentFont">58RentFont</a></p>
 
             </div>
             
